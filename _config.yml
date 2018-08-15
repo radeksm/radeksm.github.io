@@ -17,8 +17,8 @@ title: Radoslaw Smigielski personal site
 email: radoslaw.smigielski@interia.pl
 description: >- # this means to ignore newlines until "baseurl:"
     Radoslaw Smigielski personal site
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://radeksm.github.io/"
+# baseurl: "" # the subpath of your site, e.g. /blog
+# url: "https://radeksm.github.io/"
 twitter_username: radoslaws
 github_username:  radeksmg
 
@@ -28,6 +28,13 @@ theme: minima
 plugins:
   - jekyll-feed
 timezone: Europe/Dublin
+
+# Where things are
+source:      .
+destination: ./_site
+# plugins_dir:     ./_plugins
+# layouts_dir:     ./_layouts
+# data_dir: ./_data
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
