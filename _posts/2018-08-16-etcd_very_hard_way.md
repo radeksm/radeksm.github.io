@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Settig up etcd cluster - the hard way
+title: Setting up etcd cluster - the hard way
 tags:
     - etcd
 author: Radosław Śmigielski
