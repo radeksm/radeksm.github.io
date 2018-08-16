@@ -19,8 +19,9 @@ description: >- # this means to ignore newlines until "baseurl:"
     Radoslaw Smigielski personal site
 # baseurl: "" # the subpath of your site, e.g. /blog
 # url: "https://radeksm.github.io/"
-twitter_username: radoslaws
-github_username:  radeksmg
+# logo: https://avatars3.githubusercontent.com/u/1038332
+
+content: content content content
 
 # Build settings
 markdown: kramdown
@@ -54,3 +55,9 @@ destination: ./_site
 #   - vendor/ruby/
 plugins:
     - jekyll-seo-tag
+
+twitter_username: radoslaws
+github_username:  radeksm
+linkedin_username: radoslawsmigielski
+googleplus_username: RadosławŚmigielski
+# rss: rss
