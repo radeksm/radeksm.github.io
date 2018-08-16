@@ -21,22 +21,7 @@ My way let me:
 
 Install etcd
 ============
-Etcd releases page [etcd/releases](https://github.com/coreos/etcd/releases)
-{% highlight bash %}
-export ETCD_VER=v3.3.9
-export ETCD_INSTALL_DIR=${HOME}/etcd
-
-GOOGLE_URL=https://storage.googleapis.com/etcd
-DOWNLOAD_URL=${GOOGLE_URL}
-
-rm -f /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
-rm -rf /tmp/etcd-download-test && mkdir -p ${ETCD_INSTALL_DIR}
-
-curl -L ${DOWNLOAD_URL}/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz -o /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
-tar xzvf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz -C ${ETCD_INSTALL_DIR} --strip-components=1
-rm -f /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
-{% endhighlight %}
-
+Etcd installation [howto]({{ site.baseurl }}{% link _posts/2018-08-14-etcd_install.md %}).
 
 Network
 =======
