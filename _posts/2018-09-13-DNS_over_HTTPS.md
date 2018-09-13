@@ -33,6 +33,7 @@ There is few choices of public DNS servers:
 * OpenDNS owned by Cisco
   * 208.67.222.222
   * 208.67.220.220
+
 Using one of above helps but your DNS queries still fly over the network
 unencrypted.
 
@@ -52,8 +53,13 @@ about:config
 ```
 Search for __*network.trr*__.
 
-All settings
-------------
+Working configuration
+---------------------
+![TRR configuration](https://raw.githubusercontent.com/radeksm/r-blobs/master/radeksm.github.io/TRR/TRR-config.png)
+
+
+All TRR settings
+----------------
 Taken from Firefox source code __*modules/libpref/init/all.js*__
 * __network.trr.mode__ DNS Trusted Recursive Resolver
   * 0 - default off, use a native resolver only
@@ -87,3 +93,8 @@ Taken from Firefox source code __*modules/libpref/init/all.js*__
 * __*network.trr.disable-ECS*__ Explicitly disable ECS
   (EDNS Client Subnet, RFC 7871).
 
+
+Verification
+------------
+The status, highlighted column shows TRR in use.
+![TRR verification](https://raw.githubusercontent.com/radeksm/r-blobs/master/radeksm.github.io/TRR/TRR-status.png)
