@@ -54,3 +54,6 @@ Conclusions
    the price of that device which was 100 EUR.
 1. Civilian airlines fly on altitudes where cosmic radiation becomes
    main source of radiation.
+1. The measurments taken during the flights are in similar range like
+   values presented by Specialists in Radiation Protection presented here:
+   [Radiation Exposure During Commercial Airline Flights](http://hps.org/publicinformation/ate/faqs/commercialflights.html)
