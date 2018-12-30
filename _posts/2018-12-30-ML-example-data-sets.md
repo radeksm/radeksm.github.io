@@ -19,7 +19,8 @@ when starting with machine learning. This is how you can find them:
 >>> dir(datasets)
 {% endhighlight %}
 You can see three type of functions:
-1. **make\_\<SOME_DATA_SET\>** - Generate samples of synthetic data sets.
+1. **make\_\<SOME_DATA_SET\>** - Sample generators.
+   Generate samples of synthetic data sets.
 1. **load\_\<SOME_DATA_SET\>** - Load local data sets which come with
    Scikit-learn. These are parts of python *sklearn* package.
 
