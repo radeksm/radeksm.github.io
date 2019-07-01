@@ -85,7 +85,7 @@ producer-consumer model.
            print("Missing RABBIT_IP env variable")
 
        msg = message()
-       print('AMQP producer connecting to {}:{} with message {}'.\
+       print('AMQP producer connecting to {}:{} with message: \"{}\"'.\
              format(RABBIT_IP, RABBIT_PORT, msg))
        connection = pika.BlockingConnection(pika.ConnectionParameters(RABBIT_IP, RABBIT_PORT))
        channel = connection.channel()
