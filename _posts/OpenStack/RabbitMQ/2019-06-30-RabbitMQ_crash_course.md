@@ -56,7 +56,7 @@ producer-consumer model.
    {% raw %}export RABBIT_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' rabbit0)
    echo $RABBIT_IP{% endraw %}
    ```
-3. Push some messages to the queue on yoyr AMQP broker
+3. Push some messages to the queue on your AMQP broker.
    ```python
    #!/usr/bin/env python3
    """ If script executed with arguments, all of them will be send
