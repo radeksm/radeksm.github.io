@@ -70,9 +70,9 @@ producer-consumer model.
    import os
    import sys
 
-   RABBIT_IP = os.environ["RABBIT_IP"]
-   RABBIT_PORT = 5672
    QNAME='queue0'
+   RABBIT_PORT = 5672
+   RABBIT_IP = os.environ.get("RABBIT_IP", None)
 
    def message():
        _msg = "AMQP MESSAGE"
@@ -84,13 +84,15 @@ producer-consumer model.
        if RABBIT_IP is None:
            print("Missing RABBIT_IP env variable")
 
-       print('AMQP producer connecting to {}:{}'.format(RABBIT_IP, RABBIT_PORT))
+       msg = message()
+       print('AMQP producer connecting to {}:{} with message {}'.\
+             format(RABBIT_IP, RABBIT_PORT, msg))
        connection = pika.BlockingConnection(pika.ConnectionParameters(RABBIT_IP, RABBIT_PORT))
        channel = connection.channel()
        channel.queue_declare(queue=QNAME)
        channel.basic_publish(exchange='',
-           routing_key=QNAME,
-           body=message())
+                             routing_key=QNAME,
+                             body=msg)
        connection.close()
 
    if __name__ == '__main__':
@@ -114,7 +116,7 @@ producer-consumer model.
    import pika
    import os
 
-   RABBIT_IP = os.environ["RABBIT_IP"]
+   RABBIT_IP = os.environ.get("RABBIT_IP", None)
    RABBIT_PORT = 5672
    QNAME='queue0'
 
