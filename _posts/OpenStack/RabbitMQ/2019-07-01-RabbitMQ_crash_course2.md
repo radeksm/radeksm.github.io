@@ -13,7 +13,7 @@ Assume we have one queue and multiple clients connected.
 This configuration is also called **task queue** or **round-robin dispatching**.
 
 In order to send multiple messages to the same queue, I modified scrip used
-in part one.
+in part one, available on [pastebin](https://pastebin.com/aKvB9Tqt).
 ```python
 #!/usr/bin/env python3
 """ If script executed with arguments, all of them will be send over AMQP
