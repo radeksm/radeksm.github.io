@@ -29,6 +29,7 @@ Let's start from starting single RabbitMQ instance im Docker container.
    docker exec -it rabbit0 rabbitmqctl status
    docker exec -it rabbit0 rabbitmqctl -p / list_queues
    docker exec -it rabbit0 rabbitmqctl list_queues
+   docker exec -it rabbit0 rabbitmqctl list_exchanges
    docker exec -it rabbit0 rabbitmqctl list_vhosts
    docker exec -it rabbit0 rabbitmqctl list_connections
    ```
