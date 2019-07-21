@@ -14,6 +14,7 @@ How does Python interpreter know where to find executable code?
 
   ```
   echo '{"json":"obj"}' | python3 -m json.tool
+  python3 -m http.server --directory /tmp/http --bind 127.0.0.1 8001
   python3 -m zipfile -c /tmp/zip.zip /etc/fstab
   python3 -m venv /tmp/venv
   python3 -m unittest
