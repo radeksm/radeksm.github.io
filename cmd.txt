@@ -1,1 +1,19 @@
+
 podman run --name jekyll --volume="$PWD:/srv/jekyll" -p 4000:4000 -it jekyll/jekyll jekyll serve --watch --drafts --incremental
+
+chcon -Rt svirt_sandbox_file_t ~radek/src/my_staff/radeksm.github.io
+
+podman run --name jekyll --volume="$PWD:/srv/jekyll" -p 4000:4000 -it jekyll/jekyll jekyll serve --watch --drafts
+
+sudo podman run -it \
+    --name jekyll \
+    --volume="$PWD:/srv/jekyll" \
+    -p 4000:4000 \
+    jekyll/jekyll jekyll serve --watch --drafts --incremental
+
+export JEKYLL_VERSION=3.8
+porman run --rm \
+  --volume="$PWD:/srv/jekyll" \
+  --volume="$PWD/vendor/bundle:/usr/local/bundle" \
+  -it jekyll/jekyll:$JEKYLL_VERSION \
+  jekyll build
