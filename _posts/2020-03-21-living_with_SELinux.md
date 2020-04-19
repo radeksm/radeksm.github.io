@@ -43,7 +43,7 @@ Example
 =======
 Classic example of SELinux causing some problems looks like this:
 ```
-[root@localhost cbis]# systemctl  status nginx                                                                                                                                                                                                
+[root@localhost cbis]# systemctl status nginx
 ● nginx.service - The nginx HTTP and reverse proxy server
    Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; vendor preset: disabled)
    Active: failed (Result: exit-code) since Sat 2020-03-21 05:15:25 UTC; 7s ago
@@ -117,14 +117,54 @@ type=AVC msg=audit(1584773587.513:5590): avc:  denied  { getattr } for  pid=7762
                 You can use audit2allow to generate a loadable module to allow this access.
 ```
 
+Now when we identify the problem let's try to craft some new SELinux rules for what we need.
+Here is different example how to generate rules for some Ruby web applicatin
+```
+[root@photon audit]# grep ruby /var/log/audit/audit.log | audit2allow -m ryby_app
 
-```
-grep 1584773587.513:5590 /var/log/audit/audit.log | audit2allow
-```
-```
-grep 1584773587.513:5590 /var/log/audit/audit.log | audit2allow -M podman > /tmp/policy.pp
+module ryby_app 1.0;
+
+require {
+        type user_tmp_t;
+        type container_t;
+        type container_runtime_t;
+        type user_home_t;
+        class dir { add_name create remove_name write };
+        class file { create execute ioctl map open setattr unlink write };
+}
+
+#============= container_t ==============
+allow container_t container_runtime_t:dir { add_name create remove_name write };
+allow container_t container_runtime_t:file { create setattr unlink write };
+
+#!!!! This avc is allowed in the current policy
+allow container_t user_home_t:dir { add_name create remove_name write };
+
+#!!!! This avc is allowed in the current policy
+#!!!! This av rule may have been overridden by an extended permission av rule
+allow container_t user_home_t:file { create ioctl open setattr unlink write };
+allow container_t user_tmp_t:dir remove_name;
+
+#!!!! This avc can be allowed using the boolean 'domain_can_mmap_files'
+allow container_t user_tmp_t:file map;
+allow container_t user_tmp_t:file { execute unlink };
 ```
 
+Instead of printing the new rules on screen we can generate set of new rules and save them to file:
+```
+sudo grep ruby /var/log/audit/audit.log | audit2allow -m ryby_app
+```
+This will geberate two new files in current working directory:
+```
+[root@photon]# file ryby_app.pp
+ryby_app.pp: SE Linux modular policy version 1, 1 sections, mod version 19, MLS, module name ryby_app\003
+[root@photon]# file ryby_app.te
+ryby_app.te: C++ source, ASCII text
+```
+At this point we can load the new set of rules:
+```
+sudo semodule -i ryby_app.pp
+```
+Above command will install new SELinux module what can be verified with **dmesg** output.
 
-If you don't have Java installed you can get it from
-[here](https://selinuxproject.org/).
+More info about SELinux [here](https://selinuxproject.org/).
