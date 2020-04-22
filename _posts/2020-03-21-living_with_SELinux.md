@@ -152,18 +152,17 @@ allow container_t user_tmp_t:file { execute unlink };
 
 Instead of printing the new rules on screen we can generate set of new rules and save them to file:
 ```
-sudo grep ruby /var/log/audit/audit.log | audit2allow -m ryby_app
+sudo grep ruby /var/log/audit/audit.log | audit2allow -M new_policy
 ```
 This will geberate two new files in current working directory:
 ```
-[root@photon]# file ryby_app.pp
-ryby_app.pp: SE Linux modular policy version 1, 1 sections, mod version 19, MLS, module name ryby_app\003
-[root@photon]# file ryby_app.te
-ryby_app.te: C++ source, ASCII text
+[root@photon sr]# file new_policy.pp new_policy.te
+new_policy.pp: SE Linux modular policy version 1, 1 sections, mod version 19, MLS, module name new_policy
+new_policy.te: ASCII text
 ```
 At this point we can load the new set of rules:
 ```
-sudo semodule -i ryby_app.pp
+semodule -i new_policy.pp
 ```
 Above command will install new SELinux module what can be verified with **dmesg** output.
 
