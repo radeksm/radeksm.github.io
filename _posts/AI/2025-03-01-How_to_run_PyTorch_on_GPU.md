@@ -178,6 +178,7 @@ And some reults come here:
    Crunching numbers on cpu . . .
    Run on cpu. Time of execution: 0.064[s]. Matrix size: 512
    Done on CPU (size=512).
+
    Crunching numbers on cuda . . .
    Run on cuda. Time of execution: 0.788[s]. Matrix size: 512
    Done on GPU (size=512).
@@ -187,6 +188,7 @@ And some reults come here:
    Crunching numbers on cpu . . .
    Run on cpu. Time of execution: 30.193[s]. Matrix size: 2048
    Done on CPU (size=2048).
+
    Crunching numbers on cuda . . .
    Run on cuda. Time of execution: 45.506[s]. Matrix size: 2048
    Done on GPU (size=2048).
@@ -196,6 +198,7 @@ And some reults come here:
    Crunching numbers on cpu . . .
    Run on cpu. Time of execution: 325.471[s]. Matrix size: 4096
    Done on CPU (size=4096).
+
    Crunching numbers on cuda . . .
    Run on cuda. Time of execution: 368.875[s]. Matrix size: 4096
    Done on GPU (size=4096).
@@ -207,7 +210,11 @@ My old GPU has only 2GB of NVRAM. I don't know much about GPU memory allocation
 but after I changed the size of the matrix to 8192x8192 of float32 values,
 this is what happened:
 ```python
-OutOfMemoryError: CUDA out of memory. Tried to allocate 256.00 MiB. GPU 0 has a total capacity of 1.95 GiB of which 153.81 MiB is free. Including non-PyTorch memory, this process has 1.79 GiB memory in use. Of the allocated memory 1.75 GiB is allocated by PyTorch, and 8.00 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+OutOfMemoryError: CUDA out of memory. Tried to allocate 256.00 MiB. GPU 0 has a total capacity of 1.95 GiB of which 153.81 MiB is free.
+Including non-PyTorch memory, this process has 1.79 GiB memory in use. Of the allocated memory 1.75 GiB is allocated by PyTorch,
+and 8.00 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.
+See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
 ```
 Option __PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True__ does help in my case.
 
