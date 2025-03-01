@@ -2,8 +2,9 @@
 layout: post
 title: How can I run any code on my GPU, instead on CPU?
 tags:
-    - CUDA
     - AI
+    - CUDA
+    - PyTorch
 author: Radosław Śmigielski
 ---
 
@@ -15,12 +16,17 @@ models on CPU is not the most efficient way of doing it, I wanted to use my GPU.
 The things worked rather slow for me and I started asking myself a question if my models
 run on CPU or GPU? And how can I run any code on my GPU, instead on CPU?
 
-Hardware
-========
+Envrironment
+============
 For the purpose of this exercise I re-activated some old PC.
 * Everything that I describe below, I ran on Linux (Fedora 41).
 * My CPU is AMD Ryzen 7 5700G.
 * My GPU is old NVIDIA® GeForce® GT 1030
+All Python components were installed inside Python 3.x virtual environment.
+```
+python -m venv ~/venv-cuda --upgrade-deps --symlinks --system-site-packages
+source ~/venv-cuda/bin/activate
+```
 
 Intro
 =====
@@ -54,5 +60,23 @@ Sat Mar  1 06:33:20 2025
 |  No running processes found                                                             |
 +-----------------------------------------------------------------------------------------+
 ```
+Have a look on some of the interesting values like: __GPU-Util__, __Memory-Usage__, 
+__Temp__, __Perf__ (preformance profile) and finally empty list of __Processes__ running on GPU.
 
+PyTorch
+-------
+Let's start from PyTorch installation
+```
+source ~/venv-cuda/bin/activate
+pip3 install torch torchvision torchaudio
+```
+\* do not skip _torchaudio_, even if you think you don't need it :)  
+
+Now, we can check if PyTorch can detect and use your GPU:
+```
+import torch
+torch.cuda.is_available()
+torch.cuda.device_count()
+torch.cuda.get_device_name(torch.cuda.current_device())
+```
 
