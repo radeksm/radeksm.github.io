@@ -5,6 +5,7 @@ tags:
     - AI
     - CUDA
     - PyTorch
+    - GPU
 author: Radosław Śmigielski
 ---
 
@@ -61,7 +62,8 @@ Sat Mar  1 06:33:20 2025
 +-----------------------------------------------------------------------------------------+
 ```
 Have a look on some of the interesting values like: __GPU-Util__, __Memory-Usage__, 
-__Temp__, __Perf__ (preformance profile) and finally empty list of __Processes__ running on GPU.
+__Temp__, __Perf__ (preformance profile), __GPU Fan__, and finally empty list
+of __Processes__ running on GPU.
 
 PyTorch installation
 --------------------
@@ -73,7 +75,7 @@ pip3 install torch torchvision torchaudio
 \* do not skip _torchaudio_, even if you think you don't need it :)  
 
 Now, we can check if PyTorch can detect and use your GPU:
-```
+```python
 import torch
 
 torch.cuda.is_available()
@@ -85,7 +87,6 @@ Python Torch code
 -----------------
 Python code example to run on CPU and GPU.
 ```python
-
 import torch
 from datetime import datetime
 
@@ -93,8 +94,8 @@ torch.cuda.is_available()
 torch.cuda.device_count()
 torch.cuda.get_device_name(torch.cuda.current_device())
 
-size = 8192
-  
+size = 4096
+
 
 def measure_time(func):
     def inner_func(hw):
@@ -129,3 +130,62 @@ crunch_the_numbers("cuda")
 print(f"Done on GPU (size={size}).")
 ```
 
+Working GPU . . .
+-----------------
+Things to look at:
+1. GPU-Util shows 100%
+1. GPU Fan speed, no change.
+1. Temperature went up by +14°C.
+1. Performance profile changed from P8 to P0.
+1. GPU memory usage 336MiB.
+```
+(instructlab-02-cuda) ai@box ~> nvidia-smi
+Sat Mar  1 12:23:47 2025
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.86.15              Driver Version: 570.86.15      CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA GeForce GT 1030         Off |   00000000:01:00.0 Off |                  N/A |
+| 35%   40C    P0             N/A /   19W |     340MiB /   2048MiB |    100%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A          244643      C   ...nstructlab-02-cuda/bin/python        336MiB |
++-----------------------------------------------------------------------------------------+
+```
+
+Results
+-------
+And some reults come here:
+1. Matrix size 4096x4096:
+```
+Crunching numbers on cpu . . .
+Run on cpu. Time of execution: 223.323[s]. Matrix size: 4096
+Done on CPU (size=4096).
+
+Crunching numbers on cuda . . .
+Run on cuda. Time of execution: 253.248[s]. Matrix size: 4096
+Done on GPU (size=4096).
+```
+1. Matrix size 256x256:
+```
+TBD.
+```
+
+Ohhhh no, my GPU goes out of memory!!!
+--------------------------------------
+My old GPU has only 2GB of NVRAM. I don't know much about GPU memory allocation
+but after I changed the size of the matrix to 8192x8192 of float32 values,
+this is what happened:
+```python
+OutOfMemoryError: CUDA out of memory. Tried to allocate 256.00 MiB. GPU 0 has a total capacity of 1.95 GiB of which 153.81 MiB is free. Including non-PyTorch memory, this process has 1.79 GiB memory in use. Of the allocated memory 1.75 GiB is allocated by PyTorch, and 8.00 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+```
+Option __PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True__ does help in my case.
