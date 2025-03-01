@@ -174,36 +174,32 @@ Results
 -------
 And some reults come here:
 1. Matrix size 512x512:
-```
-Crunching numbers on cpu . . .
-Run on cpu. Time of execution: 0.064[s]. Matrix size: 512
-Done on CPU (size=512).
-
-Crunching numbers on cuda . . .
-Run on cuda. Time of execution: 0.788[s]. Matrix size: 512
-Done on GPU (size=512).
-```
+   ```
+   Crunching numbers on cpu . . .
+   Run on cpu. Time of execution: 0.064[s]. Matrix size: 512
+   Done on CPU (size=512).
+   Crunching numbers on cuda . . .
+   Run on cuda. Time of execution: 0.788[s]. Matrix size: 512
+   Done on GPU (size=512).
+   ```
 1. Matrix size 2048x2048:
-```
-Crunching numbers on cpu . . .
-Run on cpu. Time of execution: 30.193[s]. Matrix size: 2048
-Done on CPU (size=2048).
-
-Crunching numbers on cuda . . .
-Run on cuda. Time of execution: 45.506[s]. Matrix size: 2048
-Done on GPU (size=2048).
-```
-
+   ```
+   Crunching numbers on cpu . . .
+   Run on cpu. Time of execution: 30.193[s]. Matrix size: 2048
+   Done on CPU (size=2048).
+   Crunching numbers on cuda . . .
+   Run on cuda. Time of execution: 45.506[s]. Matrix size: 2048
+   Done on GPU (size=2048).
+   ```
 1. Matrix size 4096x4096:
-```
-Crunching numbers on cpu . . .
-Run on cpu. Time of execution: 325.471[s]. Matrix size: 4096
-Done on CPU (size=4096).
-
-Crunching numbers on cuda . . .
-Run on cuda. Time of execution: 368.875[s]. Matrix size: 4096
-Done on GPU (size=4096).
-```
+   ```
+   Crunching numbers on cpu . . .
+   Run on cpu. Time of execution: 325.471[s]. Matrix size: 4096
+   Done on CPU (size=4096).
+   Crunching numbers on cuda . . .
+   Run on cuda. Time of execution: 368.875[s]. Matrix size: 4096
+   Done on GPU (size=4096).
+   ```
 
 Ohhhh no, my GPU goes out of memory!!!
 --------------------------------------
