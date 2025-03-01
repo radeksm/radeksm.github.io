@@ -21,7 +21,7 @@ Envrironment
 ============
 For the purpose of this exercise I re-activated some old PC.
 * Everything that I describe below, I ran on Linux (Fedora 41).
-* My CPU is AMD Ryzen 7 5700G.
+* My CPU is AMD Ryzen® 7 5700G.
 * My GPU is old NVIDIA® GeForce® GT 1030
 All Python components were installed inside Python 3.x virtual environment.
 ```
@@ -38,7 +38,7 @@ So let's start from something very simple, NVIDIA CUDA provides __nvidia-smi__
 tool to check your GPU presence and status.
 
 This is how your idle GPU should looks like:
-```
+```bash
 ai@box ~/s/r/_/AI > nvidia-smi
 Sat Mar  1 06:33:20 2025
 +-----------------------------------------------------------------------------------------+
@@ -61,6 +61,7 @@ Sat Mar  1 06:33:20 2025
 |  No running processes found                                                             |
 +-----------------------------------------------------------------------------------------+
 ```
+
 Have a look on some of the interesting values like: __GPU-Util__, __Memory-Usage__, 
 __Temp__, __Perf__ (preformance profile), __GPU Fan__, and finally empty list
 of __Processes__ running on GPU.
@@ -94,7 +95,7 @@ torch.cuda.is_available()
 torch.cuda.device_count()
 torch.cuda.get_device_name(torch.cuda.current_device())
 
-size = 4096
+size = 2048
 
 
 def measure_time(func):
@@ -119,6 +120,11 @@ def crunch_the_numbers(hw):
         y2 = y1 * a
         y3 = y2 - b
         y4 = y2 + y3
+        y5 = 0.33 * a + 0.66 * b + c * 0.9
+        y = y1 + y2
+        y = y2 + y3
+        y = y3 + y4
+        y = y4 + y5
  
 
 # ON CPU
@@ -133,12 +139,14 @@ print(f"Done on GPU (size={size}).")
 Working GPU . . .
 -----------------
 Things to look at:
-1. GPU-Util shows 100%
+1. Python process with PID 244643 is working on GPU.
+1. GPU-Util shows 100%.
 1. GPU Fan speed, no change.
 1. Temperature went up by +14°C.
 1. Performance profile changed from P8 to P0.
 1. GPU memory usage 336MiB.
-```
+
+```bash
 (instructlab-02-cuda) ai@box ~> nvidia-smi
 Sat Mar  1 12:23:47 2025
 +-----------------------------------------------------------------------------------------+
@@ -165,19 +173,36 @@ Sat Mar  1 12:23:47 2025
 Results
 -------
 And some reults come here:
+1. Matrix size 512x512:
+```
+Crunching numbers on cpu . . .
+Run on cpu. Time of execution: 0.064[s]. Matrix size: 512
+Done on CPU (size=512).
+
+Crunching numbers on cuda . . .
+Run on cuda. Time of execution: 0.788[s]. Matrix size: 512
+Done on GPU (size=512).
+```
+1. Matrix size 2048x2048:
+```
+Crunching numbers on cpu . . .
+Run on cpu. Time of execution: 30.193[s]. Matrix size: 2048
+Done on CPU (size=2048).
+
+Crunching numbers on cuda . . .
+Run on cuda. Time of execution: 45.506[s]. Matrix size: 2048
+Done on GPU (size=2048).
+```
+
 1. Matrix size 4096x4096:
 ```
 Crunching numbers on cpu . . .
-Run on cpu. Time of execution: 223.323[s]. Matrix size: 4096
+Run on cpu. Time of execution: 325.471[s]. Matrix size: 4096
 Done on CPU (size=4096).
 
 Crunching numbers on cuda . . .
-Run on cuda. Time of execution: 253.248[s]. Matrix size: 4096
+Run on cuda. Time of execution: 368.875[s]. Matrix size: 4096
 Done on GPU (size=4096).
-```
-1. Matrix size 256x256:
-```
-TBD.
 ```
 
 Ohhhh no, my GPU goes out of memory!!!
@@ -189,3 +214,13 @@ this is what happened:
 OutOfMemoryError: CUDA out of memory. Tried to allocate 256.00 MiB. GPU 0 has a total capacity of 1.95 GiB of which 153.81 MiB is free. Including non-PyTorch memory, this process has 1.79 GiB memory in use. Of the allocated memory 1.75 GiB is allocated by PyTorch, and 8.00 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
 ```
 Option __PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True__ does help in my case.
+
+Conclusion
+==========
+1. In my specific case with old GPU and relatively modern CPU,
+   running things on GPU may be slower than on CPU. In most
+   of my tests CPU outperform GPU but this is exceptional situation.
+1. The Out Of Memory situation was very interesting because
+   it reveled pure memory allocation of GPU, as much of the memory
+   seems to be wasted somehow.
+
