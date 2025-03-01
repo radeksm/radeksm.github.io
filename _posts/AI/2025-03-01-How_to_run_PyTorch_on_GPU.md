@@ -63,8 +63,8 @@ Sat Mar  1 06:33:20 2025
 Have a look on some of the interesting values like: __GPU-Util__, __Memory-Usage__, 
 __Temp__, __Perf__ (preformance profile) and finally empty list of __Processes__ running on GPU.
 
-PyTorch
--------
+PyTorch installation
+--------------------
 Let's start from PyTorch installation
 ```
 source ~/venv-cuda/bin/activate
@@ -75,8 +75,57 @@ pip3 install torch torchvision torchaudio
 Now, we can check if PyTorch can detect and use your GPU:
 ```
 import torch
+
 torch.cuda.is_available()
 torch.cuda.device_count()
 torch.cuda.get_device_name(torch.cuda.current_device())
+```
+
+Python Torch code
+-----------------
+Python code example to run on CPU and GPU.
+```python
+
+import torch
+from datetime import datetime
+
+torch.cuda.is_available()
+torch.cuda.device_count()
+torch.cuda.get_device_name(torch.cuda.current_device())
+
+size = 8192
+  
+
+def measure_time(func):
+    def inner_func(hw):
+        start = datetime.now()
+        func(hw)
+        end = datetime.now()
+        td = (end - start).total_seconds()
+        print(f"Run on {hw}. Time of execution: {td:.03f}[s]. Matrix size: {size}")
+    return inner_func
+
+@measure_time
+def crunch_the_numbers(hw):
+    print(f"Crunching numbers on {hw} . . .")
+    a = torch.rand(size, size, device=hw, dtype=torch.float16)
+    b = torch.rand(size, size, device=hw, dtype=torch.float16)
+    c = torch.rand(size, size, device=hw, dtype=torch.float16)
+
+    for x in range(size):
+        y0 = a + b
+        y1 = y0 + c
+        y2 = y1 * a
+        y3 = y2 - b
+        y4 = y2 + y3
+ 
+
+# ON CPU
+crunch_the_numbers("cpu")
+print(f"Done on CPU (size={size}).")
+
+# ON GPU
+crunch_the_numbers("cuda")
+print(f"Done on GPU (size={size}).")
 ```
 
