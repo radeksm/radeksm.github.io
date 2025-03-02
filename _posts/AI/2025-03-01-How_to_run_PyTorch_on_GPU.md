@@ -66,6 +66,9 @@ Have a look on some of the interesting values like: __GPU-Util__, __Memory-Usage
 __Temp__, __Perf__ (preformance profile), __GPU Fan__, and finally empty list
 of __Processes__ running on GPU.
 
+\* And BTW, if you are wonder what that SMI stands for in that execitable __nvidia-smi__?
+   It stands for: NVIDIA System Management Interface
+
 PyTorch installation
 --------------------
 Let's start from PyTorch installation
@@ -204,7 +207,7 @@ And some reults come here:
    Done on GPU (size=4096).
    ```
 
-Ohhhh no, my GPU goes out of memory!!!
+Ohhhh gosh, my GPU goes out of memory!!!
 --------------------------------------
 My old GPU has only 2GB of NVRAM. I don't know much about GPU memory allocation
 but after I changed the size of the matrix to 8192x8192 of float32 values,
