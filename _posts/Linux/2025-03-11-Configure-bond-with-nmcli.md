@@ -12,8 +12,8 @@ Why?
 The main reason why I created below HOWTO is lack of good documentation
 how to create Linux bond interface using Network manager nmcli.
 
-Envrironment
-============
+Environment
+===========
 You need 2 or more NICs, in my case I have 5 physical NICs out of which 3 are only connected.
 ```bash
 root@box ~# ip link list
@@ -49,7 +49,7 @@ Steps
 ```bash
 nmcli connection add type bond ifname bond0 bond.options "miimon=100,mode=balance-alb"
 ```
-At this point the new bond interface should be create but it's a bond with no physical NICs plugged yet.
+1. At this point the new bond interface should be create but it's a bond with no physical NICs plugged yet.
 ```bash
 root@box ~# ip a s dev bond0
 9: bond0: <NO-CARRIER,BROADCAST,MULTICAST,MASTER,UP> mtu 1500 qdisc noqueue state DOWN group default qlen 1000
@@ -110,7 +110,7 @@ nmcli connection modify 2284f4cf-f25c-48e5-a805-c0838d3b1338 \
 
 Site notes
 ==========
-1. The bond mode which I confiured for this example is _adaptive load balancing_
-   or ALB mode. This mode allows to distribute your TX and RX traffic accross all
+1. The bond mode which I configured for this example is _adaptive load balancing_
+   or ALB mode. This mode allows to distribute your TX and RX traffic across all
    physical interfaces with no switch configuration.
 
