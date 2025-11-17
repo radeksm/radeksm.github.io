@@ -1,9 +1,10 @@
 ---
 layout: post
-title: How to extend life of your laptop battery?
+title: "How to extend life of your laptop battery?"
 tags:
     - Linux
 author: Radosław Śmigielski
+date: 2025-11-17 00:00:01 -0000
 ---
 
 Why?
