@@ -23,11 +23,8 @@ Symptoms
 1. Initial state after fresh installaton.
 * WiFi is being disabled at the software level by NetworkManager:
 ```
-root@pi15 /h/radek# rfkill  list
-0: hci0: Bluetooth
-        Soft blocked: no
-        Hard blocked: no
-1: phy0: Wireless LAN
+root@pi15 /h/radek# rfkill list wifi
+0: phy0: Wireless LAN
         Soft blocked: yes
         Hard blocked: no
 root@pi15 /h/radek# nmcli  radio wifi
@@ -53,6 +50,8 @@ rfkill: WLAN soft blocked
 
 HowTo
 =====
+Below steps use NetworkManager which is enabled by default in recent systems.
+
 1. Enable WiFi using NetworkManager
 ```
 root@pi15 /h/radek# nmcli radio wifi on
@@ -67,24 +66,21 @@ root@pi15 /h/radek# rfkill  list wifi
         Hard blocked: no
 ```
 1. Configure WPA supplicant, create */etc/wpa_supplicant/wpa_supplicant.conf* config file:
-```bash
-root@pi15 /root# cat /etc/wpa_supplicant/wpa_supplicant.conf 
+```
+root@pi15 /root# cat /etc/wpa_supplicant/wpa_supplicant.conf
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 country=PL
-
 network={
     ssid="wifi-a"
     psk="My%SecretX2"
     priority=10
 }
-
 network={
     ssid="wifi-b"
     psk="My%SecretX2"
     priority=20
 }
-
 network={
     ssid="wifi-c"
     psk="My%SecretX2"
@@ -113,3 +109,26 @@ wlan0: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="wifi-a" auth_failures=1 duration
 ```
 systemctl  enable --now  wpa_supplicant.service
 ```
+1. Add WiFi connection using NetworkManager:
+```
+nmcli connection add type wifi con-name "wifi-a" ifname wlan0 ssid "wifi-a" wifi-sec.key-mgmt wpa-psk wifi-sec.psk ""My%SecretX2
+```
+1. Finally configure IP of your new shiny WiFi interface:
+```
+nmcli connection modify <UUID_OF_WIFI_CONNECTION> \
+    ipv4.method manual \
+    ipv4.dns 192.168.14.1 \
+    ipv4.dns-search kresy.local \
+    ipv4.addresses 192.168.14.115/23  \
+    ipv4.gateway 192.168.14.1
+nmcli connection modify <UUID_OF_WIFI_CONNECTION> \
+    ipv6.method manual \
+    ipv6.dns fd00:f00c::ffff:c0a8:e01 \
+    ipv6.dns-search kresy.local \
+    ipv6.addresses fd00:f00c::ffff:c0a8:e73/64 \
+    ipv6.gateway fd00:f00c::ffff:c0a8:e01
+```
+
+**Enjoy!**
+
+
